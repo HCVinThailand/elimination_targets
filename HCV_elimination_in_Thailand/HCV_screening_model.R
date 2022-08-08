@@ -728,7 +728,7 @@ Collect_Results <- function(dataframe){
   return(c("Incidence 2030" = as.numeric(inc_2030), "Incidence Difference to Target" = as.numeric(inc_target_diff), "Deaths 2030" = as.numeric(mort_2030), "Deaths Difference to Target" = as.numeric(mort_target_diff), "Total Cases" = as.numeric(total_cases), "Cases Averted" = NA, "Total Deaths" = total_deaths, "Deaths Averted" = NA, "Total Screened" =  as.numeric(total_screened), "Extra Screened" = NA, "Year Incidence Elimination Reached" = inc_elim_year, "Year Deaths Elimination Reached" = mort_elim_year))
   
 }
-# Run baseline mortality scenario ####
+# Run baseline population scenario ####
 
 mort_scenario <- scenario_base
 mortality_base <- mortality_base_empty
@@ -944,7 +944,7 @@ out <- out[,colnames(out)!="time"]
 df1_base_scr_F <- mutate_data(out)
 results_base_F <- Collect_Results(df1_base_scr_F)
 
-# Run mortality scenario 1 ####
+# Run population scenario 1 ####
 
 mort_scenario <- scenario_1
 mortality_1 <- mortality_base_empty
@@ -1081,7 +1081,7 @@ out <- out[,colnames(out)!="time"]
 df1_mort_1_scr_F <- mutate_data(out)
 results_1_F <- Collect_Results(df1_mort_1_scr_F)
 
-# Run mortality scenario 2 ####
+# Run population scenario 2 ####
 
 mort_scenario <- scenario_2
 mortality_2 <- mortality_base_empty
@@ -1218,7 +1218,7 @@ out <- out[,colnames(out)!="time"]
 df1_mort_2_scr_F <- mutate_data(out)
 results_2_F <- Collect_Results(df1_mort_2_scr_F)
 
-# Run mortality scenario 3 ####
+# Run population scenario 3 ####
 
 mort_scenario <- scenario_3
 mortality_3 <- mortality_base_empty
@@ -1379,7 +1379,7 @@ for(i in 1:nrow(Results_Table)){
 
 view(Results_Table)
 
-# Plot mortality scenarios ####
+# Plot population scenarios by age group ####
 
 mortality_base$t <- (mortality_base$t+2004)
 mortality_base <- mortality_base %>%  pivot_longer(names_to = "group", cols = !1)
@@ -1444,7 +1444,7 @@ mortality_compare %>%
 
 
 
-# Plot population structure over time ####
+# Plot population structure over time (2004 - 2021 data) ####
 
 age_struc_long <- age_struc %>% pivot_longer(names_to = "age_group", cols = !1)
 
@@ -1481,7 +1481,7 @@ age_struc_long %>%
   scale_fill_viridis_d(direction=-1,option="D")
 
 
-# Plot birthrate over time with population projection ####
+# Plot birth rate and population data and projection ####
 
 pop_data <- cbind(pop_data,rep("data",nrow(pop_data)))
 pop_proj <- cbind(pop_proj,rep("proj",nrow(pop_proj)))
@@ -1525,7 +1525,7 @@ ggplot(pop_and_birth, aes(x = Year, y = value, colour = type)) +
   scale_colour_discrete(labels=c('Data', 'Projection')) +
   labs(title = "Birth Rate and Population", x="Year", y =(""), colour="type")
 
-# Beta matrix heat map plot ####
+# Plot beta matrix heat map ####
 
 beta_matrix <- as.data.frame(cbind(c(1:21),beta))
 
@@ -1542,7 +1542,7 @@ ggplot(beta_matrix , aes(Y, X, fill= Z)) +
   labs(title = "Beta Matrix: Derived from Sexual Contact and HPV in Laos", x="Age", y =("Age"), fill = "Transmission Coefficient") +
   theme_minimal(base_size = 18)
 
-# Plot total population of model to compare with data (4 mortality scenarios) ####
+# Plot total population of model to compare with data (4 scenarios) ####
 
 names(pop_data1)[names(pop_data1) == colnames(pop_data1)[1]] <- "Year"
 names(pop_data1)[names(pop_data1) == colnames(pop_data1)[2]] <- "value"
@@ -1607,7 +1607,7 @@ pop_compare %>%
   labs(title = "Population of Thailand", x="Year", y =("Population"), colour="Model Output", shape="Data Point")
 
 
-# Plot population structure of model to compare with data for each age group (4 mortality scenarios) ####
+# Plot population structure of model to compare with data for each age group (baseline scenarios) ####
 
 names(age_struc_proportion_data)[names(age_struc_proportion_data) == colnames(age_struc_proportion_data)[1]] <- "Year"
 UN_data_groups <- age_struc_proportion_data %>% pivot_longer(names_to = "variable", cols = !1)
@@ -1788,7 +1788,7 @@ lay <- rbind(c(1,1,1,1,2,2,2,2,3),
 grid.arrange(plot_2004,plot_2014, legend_2004, layout_matrix = lay, top=textGrob("Prevalence: Model Baseline vs. Data", gp=gpar(fontsize=18)))
 
 
-# Plot yearly incidence  of model to compare with 2030 target ####
+# Plot yearly incidence of model to compare with 2030 target ####
 
 # Baseline population scenario, all screening scenarios
 model_inc_base_base <- df1_base_scr_base %>% filter(variable %in% c("Inc"))
